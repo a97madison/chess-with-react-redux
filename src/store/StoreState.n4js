@@ -27,6 +27,8 @@ export public class ~StoreState {
     public whiteIsNext: boolean;
     public pickedSquare: Coordinate;
     public possibleMoves: Array<Coordinate>;
+    public isPlayWithHelp: boolean;
+    public isHistory: boolean;
 }
 
  const initialSquares: Array<Array<Piece>> = [
@@ -40,7 +42,7 @@ export public class ~StoreState {
     [Piece.BLACK_ROOK, Piece.BLACK_KNIGHT, Piece.BLACK_BISHOP,Piece.BLACK_QUEEN,Piece.BLACK_KING,Piece.BLACK_BISHOP,Piece.BLACK_KNIGHT,Piece.BLACK_ROOK]
 ];
 
-    // Initial state
+// Initial state
 export public const initialState: StoreState = {
 	history: [{
 		squares: initialSquares,
@@ -55,5 +57,7 @@ export public const initialState: StoreState = {
     stepNumber: 0,
 	whiteIsNext: true,
 	pickedSquare: null,
-	possibleMoves: new Array<Coordinate>()
+	possibleMoves: new Array<Coordinate>(),
+  isPlayWithHelp: true,
+  isHistory: true
 };

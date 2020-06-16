@@ -12,7 +12,7 @@ export public class ReducePickSquareActionTest {
 	@Before
 	public init() {
 		this.state = initialState;
-		
+
 	}
 
 	@Test
@@ -26,10 +26,10 @@ export public class ReducePickSquareActionTest {
 		const pickSquare = new Coordinate({row: 0, col: 1});
 		const pickLeftWhiteKnight = createPickSquareAction(pickSquare);
 		const newState = reducer(this.state, pickLeftWhiteKnight);
-		Assert.equal(newState.validDestinations.length, 2, 'Must have 2 valid destinations');
-		for (const validDest of newState.validDestinations) {
+		Assert.equal(newState.possibleMoves.length, 2, 'Must have 2 possible moves');
+		for (const validDest of newState.possibleMoves) {
 			Assert.equal(validDest.row - pickSquare.row, 2, 'Wrong row');
-			Assert.equal(Math.abs(validDest.col - pickSquare.col), 1, 'Wrong column');	
+			Assert.equal(Math.abs(validDest.col - pickSquare.col), 1, 'Wrong column');
 		}
 	}
 	// Reader: write tests for further chess game rules!

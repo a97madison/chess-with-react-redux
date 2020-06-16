@@ -165,4 +165,4 @@ function mapDispatchToProps(dispatch: {function(ReduxAction): any} ) {
 	}
  }
 
-export public const ConnectedGame = connect(mapStateToProps, mapDispatchToProps)(ChessGame);
+export public const ConnectedChessGame = connect(mapStateToProps, mapDispatchToProps)(ChessGame);
