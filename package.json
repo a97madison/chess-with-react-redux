@@ -43,10 +43,13 @@
 		"next": "9.3.*",
 		"org.eclipse.n4js.mangelhaft": "latest",
 		"org.eclipse.n4js.mangelhaft.assert": "latest",
-		"react": "16.6.*",
-		"react-dom": "16.6.*",
+		"react": "^16.6.3",
+		"react-dom": "^16.6.3",
 		"react-ios-switch": "^0.1.19",
 		"react-redux": "6.0.*",
+		"react-router": "^5.2.0",
+		"react-router-dom": "^5.2.0",
+		"reactstrap": "^8.4.1",
 		"redux": "4.0.*"
 	}
 }

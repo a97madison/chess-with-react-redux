@@ -1,13 +1,13 @@
-import {ConnectedGame} from "components/Game";
+import {App} from "App";
 import {Provider} from "@n4jsd/react-redux";
 import {store} from "store/store";
 import * as ReactDOM from 'react-dom';
 
-const mountNode = document.getElementById("mainAppMountPoint")
+const mountNode = document.getElementById("chessAppMountPoint")
 
 ReactDOM.render(
 	<Provider store={store}>
-		<ConnectedGame />
+		<App />
 	</Provider>,
 	mountNode
 )
