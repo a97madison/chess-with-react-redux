@@ -8,7 +8,8 @@ module.exports = {
 
   entry: {
   	// Webpack starts calculating dependency graph from this file
-    app: './src-gen/main.js'
+    app: './src-gen/main2.js'
+    // app2: './src-gen/main2.js'
   },
   output: {
   	// The output concatenated file
@@ -16,7 +17,7 @@ module.exports = {
     publicPath: 'dist/',
     path: path.resolve(__dirname, './dist')
   },
-  
+
   externals: {
     'react': 'React',
     'react-dom': 'ReactDOM',
@@ -24,11 +25,11 @@ module.exports = {
     'redux': 'Redux'
   },
 
-  devtool: 'inline-source-map', 
+  devtool: 'inline-source-map',
 
   /** Configure Webpack Dev server */
   devServer: {
-  	// Serve files from the `.` folder at localhost:8080 
+  	// Serve files from the `.` folder at localhost:8080
   	contentBase: path.join(__dirname, '.'),
   	port: 8080,
   	hot: true,
