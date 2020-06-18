@@ -1,0 +1,86 @@
+import * as React from "react";
+
+/**
+ * Checkbox component's props
+ */
+export public interface ~CheckboxProps extends React.ComponentProps {
+ 	public label: string;
+    public isSelected: boolean;
+    public onCheckboxChange: {function(): void};
+}
+
+export public class Checkbox extends React.Component<CheckboxProps, Object> {
+
+  @Override
+  public render(): React.Element<?> {
+    return (
+      <div className="form-check">
+        <label>
+          <input
+            type="checkbox"
+            name={this.props.label}
+            checked={this.props.isSelected}
+            onChange={() => { this.props.onCheckboxChange(); }}
+            className="form-check-input"
+          />
+          {this.props.label}
+        </label>
+      </div>
+    );
+  }
+}
+
+// export default public class Checkbox extends React.Component<CheckboxProps, Object> {
+  //
+  // /* onCheckboxChange method */
+  // private onCheckboxChange(): void {
+  //   if (this.props.type == "help") {
+  //     createToggleHelpAction(!this.props.isSelected);
+  //     console.log("toggle help action");
+  //   } else if (this.props.type == "history") {
+  //     createToggleHistoryAction(!this.props.isSelected);
+  //     console.log("toggle history action");
+  //   }
+  // }
+//   /* Render checkbox
+//   */
+//   private renderCheckbox(): React.Element<?> {
+//     return (
+//       <div className="form-check">
+//         <label>
+//           <input
+//             type="checkbox"
+//             name={this.props.label}
+//             checked={this.props.isSelected}
+//             onChange={() => { this.onCheckboxChange(); }}
+//             className="form-check-input"
+//           />
+//           {this.props.label}
+//         </label>
+//       </div>
+//     );
+//   }
+//
+//   @Override
+//   public render(): React.Element<?> {
+//     return (
+//       <div>
+//         { this.renderCheckbox() }
+//       </div>
+//     )
+//   }
+// }
+
+ // /* Map Checkbox's events to Redux actions */
+//  function mapDispatchToProps(dispatch: {function(ReduxAction): any} ) {
+//    return {
+//      toggleHelpAction: (isPlayWithHelp: boolean) => {
+//        dispatch(createToggleHelpAction(isPlayWithHelp))
+//      },
+//      toggleHistoryAction: (isHistory: boolean) => {
+//        dispatch(createToggleHistoryAction(isHistory))
+//      }
+//    }
+//  }
+//
+// export public const ConnectedCheckbox = connect(mapDispatchToProps)(Checkbox);

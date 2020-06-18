@@ -1,0 +1,104 @@
+import {Checkbox} from "components/Checkbox";
+import {connect} from "@n4jsd/react-redux";
+import {createToggleHelpAction} from "actions/ToggleHelpAction";
+import {createToggleHistoryAction} from "actions/ToggleHistoryAction";
+import * as React from "react";
+import {ReduxAction} from "@n4jsd/redux";
+import {StoreState} from "store/StoreState";
+
+/* Top Part props */
+ export public interface ~TopPartProps extends React.ComponentProps {
+   public isPlayWithHelp: boolean; // redux
+     public isHistory: boolean; // redux
+     public toggleHelpAction?: {function(boolean):void};
+     public toggleHistoryAction?: {function(boolean):void}
+     // cpu level information
+ }
+
+
+  const topPartStyles = {
+    display: 'flex',
+    flexDirection: 'row',
+    marginTop: '5px',
+    marginBottom: '5px',
+    marginLeft: '10px',
+  }
+
+ /* Top Part temporary React component (root... root will actually be Home) */
+ export default public class TopPart extends React.Component<TopPartProps, Object> {
+
+     /* onHelpChange method */
+     private onHelpChange(): void {
+       this.props.toggleHelpAction(!this.props.isPlayWithHelp);
+       console.log("toggle help action");
+     }
+
+     /* onHistoryChange method */
+     private onHistoryChange(): void {
+       this.props.toggleHistoryAction(!this.props.isHistory);
+       console.log("toggle history action");
+     }
+
+     private renderHelpSwitch(): React.Element<?> {
+       console.log("render help");
+       const isSelected: boolean = this.props.isPlayWithHelp;
+       const switchLabel: string = "PLAY WITH HELP OPTION";
+
+       const checkbox: React.Element<?> = (
+         <Checkbox
+           label={switchLabel}
+           isSelected={isSelected}
+           onCheckboxChange={() => this.onHelpChange() }
+         />
+       );
+       return checkbox;
+     }
+
+     private renderHistorySwitch(): React.Element<?> {
+       console.log("render history");
+       const isSelected: boolean = this.props.isHistory;
+       const switchLabel: string = "JUMP BACK IN HISTORY OPTION";
+
+       const checkbox: React.Element<?> = (
+         <Checkbox
+           label={switchLabel}
+           isSelected={isSelected}
+           onCheckboxChange={() => this.onHistoryChange() }
+         />
+       );
+       return checkbox;
+     }
+
+    @Override
+    public render(): React.Element<?> {
+      return (
+        <div style={topPartStyles}>
+          {this.renderHelpSwitch()}
+          {this.renderHistorySwitch()}
+        </div>
+
+      );
+    }
+ }
+
+ /* Map Redux state to Top Part's props */
+ function mapStateToProps(state: StoreState): TopPartProps {
+  return {
+     isPlayWithHelp: state.isPlayWithHelp,
+     isHistory: state.isHistory
+    }
+ }
+
+ /* Map Top Part's events to Redux actions */
+ function mapDispatchToProps(dispatch: {function(ReduxAction): any} ) {
+   return {
+     toggleHelpAction: (isPlayWithHelp: boolean) => {
+       dispatch(createToggleHelpAction(isPlayWithHelp))
+     },
+     toggleHistoryAction: (isHistory: boolean) => {
+       dispatch(createToggleHistoryAction(isHistory))
+     }
+   }
+ }
+
+export public const ConnectedTopPart = connect(mapStateToProps, mapDispatchToProps)(TopPart);

@@ -16,22 +16,41 @@ import {initialState} from "store/StoreState";
 export public function reducer(state: StoreState, action: ReduxAction): StoreState {
 	if (!state) {
 		state = initialState;
+		// return state;
 	}
 
 	if (!action) {
 		return state;
 	}
-
-	const { history, stepNumber, whiteIsNext, isPlayWithHelp, isHistory } = state;
+	var newState = state;
+	const { history, stepNumber, whiteIsNext, pickedSquare, possibleMoves, isPlayWithHelp, isHistory } = state;
 	switch (action.type) {
 		case ToggleHelpAction.n4type.fqn:
-			state.isPlayWithHelp = !isPlayWithHelp;
-			return state;
+      console.log("action reducer");
+			const toggleHelpAction = action as ToggleHelpAction;
+			return {
+				history: history,
+				stepNumber: stepNumber,
+				whiteIsNext: whiteIsNext,
+				pickedSquare: pickedSquare,
+				possibleMoves: possibleMoves,
+				isPlayWithHelp: toggleHelpAction.isPlayWithHelp,
+				isHistory: isHistory
+			};
 		case ToggleHistoryAction.n4type.fqn:
-			state.isHistory = !isHistory;
-			return state;
+      console.log("action reducer");
+			const toggleHistoryAction = action as ToggleHistoryAction;
+			return {
+				history: history,
+				stepNumber: stepNumber,
+				whiteIsNext: whiteIsNext,
+				pickedSquare: pickedSquare,
+				possibleMoves: possibleMoves,
+				isPlayWithHelp: isPlayWithHelp,
+				isHistory: toggleHistoryAction.isHistory
+			};
 		case PickSquareAction.n4type.fqn: // This reducer is interested in this action
-
+      console.log("pick square");
 			const pickSquareAction = action as PickSquareAction;
 			const selectedPos = pickSquareAction.coord;
 
@@ -43,7 +62,7 @@ export public function reducer(state: StoreState, action: ReduxAction): StoreSta
 
 			if (GameRules.calculateWinner(currentSnapshot, whiteIsNext)) {
 				// Game over, nothing to do anymore
-				return state;
+				return newState;
 			}
 
         	const currentPiece = currentSquares[selectedPos.row][selectedPos.col];
@@ -51,12 +70,16 @@ export public function reducer(state: StoreState, action: ReduxAction): StoreSta
 	           ((GameRules.isBlackpiece(currentPiece) && !whiteIsNext))) {
 	            // piece has been picked by the player in turn
 	            const possibleMoves: Array<Coordinate> = GameRules.calculatePossibleMoves(currentSnapshot, currentPiece, selectedPos);
-							state.history = newHistory;
-							state.stepNumber = stepNumber;
-							state.whiteIsNext = whiteIsNext;
-							state.pickedSquare = selectedPos;
-							state.possibleMoves = possibleMoves;
-							return state;
+              console.log("return1");
+							return {
+								history: newHistory,
+								stepNumber: stepNumber,
+								whiteIsNext: whiteIsNext,
+								pickedSquare: selectedPos,
+								possibleMoves: possibleMoves,
+								isPlayWithHelp: isPlayWithHelp,
+								isHistory: isHistory
+							};
 	        }
 
 			if (state.pickedSquare) {
@@ -84,25 +107,39 @@ export public function reducer(state: StoreState, action: ReduxAction): StoreSta
 		                rightBlackRookMoved = rightBlackRookMoved || ((attemptedMove.piece == Piece.BLACK_ROOK) && state.pickedSquare.col == 7);
 		            }
 
-								state.history = newHistory.concat([
-										{
-												squares: newSquares,
-												lastMoves: moves,
-												whiteKingMoved: whiteKingMoved,
-												leftWhiteRookMoved: leftWhiteRookMoved,
-												rightWhiteRookMoved: rightWhiteRookMoved,
+								console.log("return2");
+								return {
+									history: newHistory.concat([
+											{
+													squares: newSquares,
+													lastMoves: moves,
+													whiteKingMoved: whiteKingMoved,
+													leftWhiteRookMoved: leftWhiteRookMoved,
+													rightWhiteRookMoved: rightWhiteRookMoved,
 
-												blackKingMoved: blackKingMoved,
-												leftBlackRookMoved: leftBlackRookMoved,
-												rightBlackRookMoved: rightBlackRookMoved
-										}
-								]);
-								state.stepNumber = history.length;
-								state.whiteIsNext = !whiteIsNext;
-								state.pickedSquare = null;
-								state.possibleMoves = new Array<Coordinate>;
-								return state;
-	        	}
+													blackKingMoved: blackKingMoved,
+													leftBlackRookMoved: leftBlackRookMoved,
+													rightBlackRookMoved: rightBlackRookMoved
+											}
+									]),
+									stepNumber: history.length,
+									whiteIsNext: !whiteIsNext,
+									pickedSquare: null,
+									possibleMoves: new Array<Coordinate>,
+									isPlayWithHelp: isPlayWithHelp,
+									isHistory: isHistory
+								};
+	        	} else {
+							return {
+								history: history,
+								stepNumber: stepNumber,
+								whiteIsNext: whiteIsNext,
+								pickedSquare: null,
+								possibleMoves: new Array<Coordinate>,
+								isPlayWithHelp: isPlayWithHelp,
+								isHistory: isHistory
+							};
+						}
 			}
 			break;
 
@@ -110,13 +147,15 @@ export public function reducer(state: StoreState, action: ReduxAction): StoreSta
 			const jumpToStepAction = action as JumpToStepAction;
 			const step = jumpToStepAction.step;
 
-			state.history = history.slice();
-			state.stepNumber = step;
-			state.whiteIsNext = step % 2 == 0;
-			state.pickedSquare = null;
-			state.possibleMoves = new Array<Coordinate>;
-			return state;
-
+			return {
+				history: history.slice(),
+				stepNumber: step,
+				whiteIsNext: step % 2 == 0,
+				pickedSquare: null,
+				possibleMoves: new Array<Coordinate>,
+				isPlayWithHelp: isPlayWithHelp,
+				isHistory: isHistory
+			};
 		default:
 			// Irrelevant action, return the old state
 			return state;

@@ -1,0 +1,14 @@
+import {ActionBase} from "actions/ActionBase";
+
+/**
+ * Toggle help action
+ */
+export public class ToggleHelpAction extends ActionBase {
+	public isPlayWithHelp: boolean;
+
+	public constructor(@Spec spec:~i~this) {}
+}
+
+export public function createToggleHelpAction(isPlayWithHelp: boolean): ActionBase {
+  return new ToggleHelpAction({ isPlayWithHelp : isPlayWithHelp });
+}

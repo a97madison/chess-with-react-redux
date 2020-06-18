@@ -11,7 +11,8 @@ export public interface ~BoardProps extends React.ComponentProps {
     public squares: Array<Array<Piece>>;
     public pickedSquare: Coordinate;
     public possibleMoves: Array<Coordinate>;
-    public onClick: {function(Coordinate): void}
+    public onClick: {function(Coordinate): void};
+    public isPlayWithHelp: boolean;
 }
 
 /**
@@ -62,6 +63,7 @@ export public class Board extends React.Component<BoardProps, Object> {
                isPicked={isPicked}
                isPossibleMove={isPossibleMove}
                piece={piece}
+               isPlayWithHelp={this.props.isPlayWithHelp}
                onClick={() => this.props.onClick(pos)}
              />
          </div>

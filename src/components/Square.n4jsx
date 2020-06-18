@@ -1,5 +1,7 @@
 import {Piece} from "Piece";
 import * as React from "react";
+import {connect} from "@n4jsd/react-redux";
+// import {ReduxAction} from "@n4jsd/redux";
 
 /**
  * Square props
@@ -10,6 +12,7 @@ export public interface ~SquareProps extends React.ComponentProps {
     public onClick: {function(): void}
     public isPicked: boolean;
     public isPossibleMove: boolean;
+    public isPlayWithHelp: boolean;
 }
 
 /**
@@ -26,32 +29,36 @@ const boardSquareStyles = {
 }
 
 /**
- * Square React component
+ * Square React component. needs to be a class
  */
-export public function Square(props: SquareProps): React.Element<?> {
-	let light: string = '#EADAB9';
-	let dark: string = '#C2A482';
-	let fadedLight = 'rgba(234, 218, 185, 0.2)';
-	let fadedDark = 'rgba(194, 164, 130, 0.2)';
-	let possibleMove = 'rgba(0, 128, 0, 0.95)';
-	let possibleCapture = 'rgba(255, 255, 0, 0.9)'; // CAN U MOVE HERE??
+export public class Square extends React.Component<SquareProps, Object> {
 
-	let backgroundColour: string = props.isWhite? light : dark;
-	// Special square highlighting a picked square or possible move?
-	if (props.isPicked) {
-		backgroundColour = props.isWhite? fadedLight : fadedDark;
-	} else if (props.isPossibleMove) {
-		if (props.piece) {
-			backgroundColour = possibleMove;
-		} else {
-			backgroundColour = possibleCapture;
+		@Override
+		public render(): React.Element<?> {
+			let light: string = '#EADAB9';
+			let dark: string = '#C2A482';
+			let fadedLight = 'rgba(234, 218, 185, 0.2)';
+			let fadedDark = 'rgba(194, 164, 130, 0.2)';
+			let possibleMove = 'rgba(0, 128, 0, 0.95)';
+			let possibleCapture = 'rgba(255, 255, 0, 0.9)'; // CAN U MOVE HERE??
+
+			let backgroundColour: string = this.props.isWhite? light : dark;
+			// Special square highlighting a picked square or possible move?
+			if (this.props.isPicked) {
+				backgroundColour = this.props.isWhite? fadedLight : fadedDark;
+			} else if (this.props.isPossibleMove && this.props.isPlayWithHelp) {
+				if (this.props.piece) {
+					backgroundColour = possibleMove;
+				} else {
+					backgroundColour = possibleCapture;
+				}
+			}
+
+			return (
+				<div style={Object.assign({}, boardSquareStyles, {backgroundColor: backgroundColour})}
+						onClick={this.props.onClick}>
+								{this.props.piece}
+				</div>
+			);
 		}
-	}
-
-	return (
-		<div style={Object.assign({}, boardSquareStyles, {backgroundColor: backgroundColour})}
-				onClick={props.onClick}>
-						{props.piece}
-		</div>
-	);
 }

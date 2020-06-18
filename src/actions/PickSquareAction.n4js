@@ -17,6 +17,6 @@ export public class PickSquareAction extends ActionBase {
  * Create a PickSquareAction
  */
 export public function createPickSquareAction(pos: Coordinate): PickSquareAction {
-	return new PickSquareAction({ coord: pos });
-} 
-
+  console.log("square picked");
+  return new PickSquareAction({ coord: pos });
+}

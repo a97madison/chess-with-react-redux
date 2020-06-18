@@ -72,28 +72,6 @@ import {StoreState} from "store/StoreState";
               <ConnectedTopPart />
               // CONNECTED CHESS GAME
               <ConnectedChessGame />
-/*               <div style={gameboardStyles}>
-                  <Board
-                      squares={currentSnapshot.squares}
-                      pickedSquare={this.props.pickedSquare}
-                      possibleMoves={this.props.possibleMoves}
-                      onClick={pos => createPickSquareAction(pos)}
-                    />
-               </div>
-
-               <div style={gameInfoStyles}>
-                   <div>{status}</div>
-                   <p/>
-                   <table style={tableStyles}>
-                     <tr>
-                         <th style={stepStyles}>{"Step"}</th>
-                         <th style={moveStyles}>{"Move"}</th>
-                         <th style={actionStyles}>{"Action"}</th>
-                     </tr>
-                     {moves}
-                   </table>
-                </div>
-                */
           </div>
       );
     }
