@@ -1,1 +1,1 @@
-{"sessionId":"ab6c0f71-ae36-4dfb-8b0e-5ce2a5121387","testDescriptors":[{"origin":"chess-react-redux","fqn":"src-gen/ReducePickSquareActionTest/ReducePickSquareActionTest","testMethods":["initialStateTest","knightValidDestinationsTest"]}]}
+{"sessionId":"c6e1c19d-235c-456e-b14d-97bdd66803aa","testDescriptors":[{"origin":"chess-react-redux","fqn":"src-gen/ReducePickSquareActionTest/ReducePickSquareActionTest","testMethods":["initialStateTest","knightValidDestinationsTest"]}]}

@@ -34,9 +34,10 @@
 		"n4js-mangelhaft-cli": "latest",
 		"webpack": "4.42.*",
 		"webpack-cli": "3.3.*",
-		"webpack-dev-server": "3.10.*"
+		"webpack-dev-server": "^3.11.0"
 	},
 	"dependencies": {
+		"@types/react-router-dom": "^5.1.5",
 		"@zeit/next-css": "1.0.*",
 		"bootstrap": "^4.5.0",
 		"debug": "4.1.*",
@@ -44,7 +45,7 @@
 		"n4js-runtime": "latest",
 		"n4js-runtime-es2015": "latest",
 		"n4js-runtime-html5": "latest",
-		"next": "9.3.*",
+		"next": "^9.3.6",
 		"org.eclipse.n4js.mangelhaft": "latest",
 		"org.eclipse.n4js.mangelhaft.assert": "latest",
 		"react": "^16.13.1",

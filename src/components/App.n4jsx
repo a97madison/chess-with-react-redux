@@ -1,6 +1,7 @@
 import * as React from "react";
-import { BrowserRouter as Router, Route, Switch, Link, Redirect } from "react-router-dom"
-import MainPage from "/pages/Home";
+// import BrowserRouter from "react-router-dom";
+// import {Route, Switch, Link, Redirect} from "react-router-dom";
+// import MainPage from "pages/Home";
 
  /* empty props */
   export public interface ~EmptyProps extends React.ComponentProps {}
@@ -9,8 +10,11 @@ import MainPage from "/pages/Home";
 
     @Override
     public render(): React.Element<?> {
-      return <Router>
-        <Route path="/" component={MainPage} />
-      </Router>
+      return (
+        <div> </div>
+        // <BrowserRouter>
+        //   <Route path="/" component={MainPage} />
+        // </BrowserRouter>
+      );
     }
   }
