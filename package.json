@@ -22,14 +22,16 @@
 		"output": "src-gen"
 	},
 	"devDependencies": {
-		"n4js-cli": "latest",
-		"n4js-mangelhaft-cli": "latest",
 		"@n4jsd/react": "<=16.6.*",
 		"@n4jsd/react-dom": "<=16.6.*",
 		"@n4jsd/react-redux": "^6.0.0",
 		"@n4jsd/redux": "<=4.0.*",
+		"babel-eslint": "^10.1.0",
 		"clean-webpack-plugin": "3.0.*",
+		"eslint": "^7.2.0",
 		"html-webpack-plugin": "3.2.*",
+		"n4js-cli": "latest",
+		"n4js-mangelhaft-cli": "latest",
 		"webpack": "4.42.*",
 		"webpack-cli": "3.3.*",
 		"webpack-dev-server": "3.10.*"
@@ -38,6 +40,7 @@
 		"@zeit/next-css": "1.0.*",
 		"bootstrap": "^4.5.0",
 		"debug": "4.1.*",
+		"eslint-plugin-react": "^7.20.0",
 		"n4js-runtime": "latest",
 		"n4js-runtime-es2015": "latest",
 		"n4js-runtime-html5": "latest",

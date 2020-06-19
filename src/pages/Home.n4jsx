@@ -5,7 +5,7 @@ import * as React from "react";
    public label: string;
  }
 
-export public class MainPage extends React.Component<MainProps, Object> {
+export default public class MainPage extends React.Component<MainProps, Object> {
 
   @Override
   public render(): React.Element<?> {
