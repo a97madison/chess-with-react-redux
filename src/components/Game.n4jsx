@@ -3,6 +3,7 @@ import {ConnectedChessGame} from "components/ChessGame"
 import {ConnectedTopPart} from "components/TOPPART"
 import * as React from "react";
 import {StoreState} from "store/StoreState";
+// import { Button } from 'reactstrap';
 
  /* Game props */
   export public interface ~GameProps extends React.ComponentProps {
@@ -72,6 +73,8 @@ import {StoreState} from "store/StoreState";
               <ConnectedTopPart />
               // CONNECTED CHESS GAME
               <ConnectedChessGame />
+              // <Button onClick={() => { this.startGame(); }}>{"START GAME"}</Button>
+              // <Button onClick={() => { this.navToSettings(); }}>{"SETTINGS"}</Button>
           </div>
       );
     }

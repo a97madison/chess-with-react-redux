@@ -8,7 +8,7 @@ module.exports = {
 
   entry: {
   	// Webpack starts calculating dependency graph from this file
-    app: './src-gen/main2.js'
+    app: './src-gen/main.js'
     // app2: './src-gen/main2.js'
   },
   output: {

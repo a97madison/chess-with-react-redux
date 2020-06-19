@@ -36,6 +36,7 @@
 	},
 	"dependencies": {
 		"@zeit/next-css": "1.0.*",
+		"bootstrap": "^4.5.0",
 		"debug": "4.1.*",
 		"n4js-runtime": "latest",
 		"n4js-runtime-es2015": "latest",
@@ -43,8 +44,8 @@
 		"next": "9.3.*",
 		"org.eclipse.n4js.mangelhaft": "latest",
 		"org.eclipse.n4js.mangelhaft.assert": "latest",
-		"react": "^16.6.3",
-		"react-dom": "^16.6.3",
+		"react": "^16.13.1",
+		"react-dom": "^16.13.1",
 		"react-ios-switch": "^0.1.19",
 		"react-redux": "6.0.*",
 		"react-router": "^5.2.0",

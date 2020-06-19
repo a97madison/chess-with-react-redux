@@ -1,0 +1,19 @@
+import * as React from "react";
+
+/* Home props */
+ export public interface ~MainProps extends React.ComponentProps {
+   public label: string;
+ }
+
+export public class MainPage extends React.Component<MainProps, Object> {
+
+  @Override
+  public render(): React.Element<?> {
+    return (
+      <div>
+        {this.props.label}
+        {"Play game"}
+      </div>
+    );
+  }
+}
