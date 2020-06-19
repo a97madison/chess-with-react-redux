@@ -10,8 +10,9 @@ import * as React from "react";
 
     @Override
     public render(): React.Element<?> {
+      console.log("APP REACT RENDER!");
       return (
-        <div> </div>
+        <div>{"abc"}</div>
         // <BrowserRouter>
         //   <Route path="/" component={MainPage} />
         // </BrowserRouter>

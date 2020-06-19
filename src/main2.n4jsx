@@ -1,13 +1,6 @@
-import {App} from "components/App";
-import {Provider} from "@n4jsd/react-redux";
-import {store} from "store/store";
+import App from "components/App";
 import * as ReactDOM from 'react-dom';
 
 const mountNode = document.getElementById("mainAppMountPoint")
 
-ReactDOM.render(
-	<Provider store={store}>
-		<App />
-	</Provider>,
-	mountNode
-)
+ReactDOM.render(<App />, mountNode);
