@@ -4,6 +4,7 @@ import {Coordinate} from "Coordinate";
 import {createJumpToStepAction} from "actions/JumpToStepAction";
 import {createPickSquareAction} from "actions/PickSquareAction";
 import {GameRules} from "GameRules";
+import {Piece} from "Piece";
 import * as React from "react";
 import {ReduxAction} from "@n4jsd/redux";
 import {Snapshot} from "store/StoreState";
@@ -19,6 +20,7 @@ export public interface ~ChessGameProps extends React.ComponentProps {
     public pickedSquare: Coordinate;
     public possibleMoves: Array<Coordinate>;
     public isPlayWithHelp: boolean;
+    public capturedPieces: Array<Array<Piece>>;
     public createPickSquareAction?: {function(Coordinate):void};
     public jumpToStep?: {function(int):void}
 }
@@ -29,36 +31,53 @@ export public interface ~ChessGameProps extends React.ComponentProps {
 export default public class ChessGame extends React.Component<ChessGameProps, Object> {
 
   @Override
+  public componentDidMount() {
+      document.body.style.backgroundColor = "lightgrey"
+  }
+
+  @Override
   public render(): React.Element<?> {
-    const {history, createPickSquareAction, jumpToStep, whiteIsNext, stepNumber} = this.props;
+    const {history, createPickSquareAction, jumpToStep, whiteIsNext, stepNumber, capturedPieces} = this.props;
 
     const currentSnapshot = history[stepNumber];
 	const winner = GameRules.calculateWinner(currentSnapshot, whiteIsNext);
     const moves = history.map((snapshot, step) => {
-      const actionLabel = step ? 'Go to move #' + step : 'Go to game start';
+      const actionLabel = step ? 'Go to move #' + step : 'Go to start of game.';
+
       const tableCellStyles = {
-          textAlign: 'center',
+          textAlign: 'left',
           verticalAlign: 'middle',
-          padding: '5px',
-          position: 'relative'
+          border: '1px solid black',
+          position: 'relative',
+          fontFamily: 'Arial Unicode MS'
+      };
+
+      const actionCellStyles = {
+        backgroundColor: 'green',
+        textAlign: 'left',
+        verticalAlign: 'middle',
+        border: '1px solid black',
+        position: 'relative',
+        fontFamily: 'Arial Unicode MS',
       };
 
       const actionButtonStyles = {
         backgroundColor: 'green',
         border: 'none',
-        color: 'white',
+        color: 'black',
         padding: '4px',
+        width: '100%',
         textAlign: 'center',
         textDecoration: 'none',
-        display: 'inline-block'
-      }
+        // display: 'inline-block'
+      };
 
       return (
           <React.Fragment>
               <tr>
-                <td style={tableCellStyles}>{step}</td>
+                <td style={tableCellStyles}>{step ? step : ''}</td>
                 <td style={tableCellStyles}>{snapshot.lastMoves.join(',')}</td>
-                <td style={tableCellStyles}>
+                <td style={actionCellStyles}>
                   <button style={actionButtonStyles} onClick={() => jumpToStep(step)}>{actionLabel}</button>
                 </td>
               </tr>
@@ -74,23 +93,134 @@ export default public class ChessGame extends React.Component<ChessGameProps, Ob
       status = "Next player: " + (this.props.whiteIsNext ? "White" : "Black");
     }
 
+    const headerStyles = {
+      width: '100%',
+      textAlign: 'center',
+      padding: '10px',
+      paddingLeft: '0px',
+      paddingRight: '0px',
+      backgroundColor: 'lightgrey',
+      font: '18vw',
+    }
+
+    const gameInfoContainerStyles = {
+      width: '90%',
+      height: '18vw',
+      overflowY: 'scroll',
+      border: '1px solid darkgrey',
+      borderRadius: '10px',
+      padding: '15px'
+    }
+
+    const turnTableStyles = {
+      width: '100%',
+      borderSpacing: '0px',
+    }
+
+    const capturedTableStyles = {
+      height: '100%',
+      width: '100%',
+      board: '2px solid black',
+      borderSpacing: '0px',
+    }
+
     const tableStyles = {
-        width: '100%'
+        width: '100%',
+        border: '2px solid black',
+        borderSpacing: '0px',
+        backgroundColor: '#4CAF50',
     }
 
     const stepStyles = {
-        width: '10%'
-
+        width: '10%',
+        padding: '5px',
+        border: '1px solid black',
     }
 
     const moveStyles = {
-        width: '45%'
+        width: '45%',
+        padding: '5px',
+        border: '1px solid black',
     }
 
     const actionStyles = {
-        width: '45%'
+        width: '45%',
+        padding: '5px',
+        border: '1px solid black',
+        backgroundColor: 'green',
     }
 
+    const whiteTurnStyles = {
+        padding: '12px',
+        backgroundColor: '#4CAF50',
+        color: 'white',
+    }
+
+    const blackTurnStyles = {
+        padding: '12px',
+        backgroundColor: '#4CAF50',
+        color: 'black',
+    }
+
+    const turnStyles = {
+        padding: '12px',
+        backgroundColor: 'lightgrey',
+        color: 'lightgrey',
+    }
+
+    const whiteStyles = {
+        padding: '5px',
+        width: '50%',
+        border: '2px solid black',
+        borderRight: '1px solid black',
+        borderBottom: '1px solid black',
+        backgroundColor: 'lightgrey',
+        color: 'black',
+        fontFamily: 'Arial Unicode MS'
+    }
+
+    const blackStyles = {
+        padding: '5px',
+        width: '50%',
+        border: '2px solid black',
+        borderLeft: '1px solid black',
+        borderBottom: '1px solid black',
+        backgroundColor: 'black',
+        color: 'white',
+        fontFamily: 'Arial Unicode MS'
+    }
+
+    const capturedLeftStyles = {
+      padding: '5px',
+      verticalAlign: 'top',
+      width: '50%',
+      border: '2px solid black',
+      borderRight: '1px solid black',
+      borderTop: '1px solid black',
+      // backgroundColor: 'lightgrey',
+      color: 'black',
+      fontSize: '2vw',
+      fontFamily: 'Arial Unicode MS'
+    }
+
+    const capturedRightStyles = {
+      padding: '5px',
+      verticalAlign: 'top',
+      width: '50%',
+      height: 'inherit',
+      border: '2px solid black',
+      borderLeft: '1px solid black',
+      borderTop: '1px solid black',
+      // backgroundColor: 'white',
+      color: 'black',
+      fontSize: '2vw',
+      fontFamily: 'Arial Unicode MS'
+    }
+
+    const appStyles = {
+      display: 'flex',
+      flexDirection: 'column',
+    }
     const gameStyles = {
         display: 'flex',
         flexDirection: 'row'
@@ -98,43 +228,109 @@ export default public class ChessGame extends React.Component<ChessGameProps, Ob
 
     const gameInfoStyles = {
         marginTop: '20px',
-        marginLeft: '20px',
-        width: '40vw',
+        marginLeft: '10px',
+        marginRight: '10px',
+        width: '50vw',
         fontSize: '1.5vw'
+    }
+
+    const turnInfoStyles = {
+      height: '30%'
+    }
+
+    const capturedHeaderStyles = {
+      height: '4vw',
+      verticalAlign: 'middle',
+    }
+
+    const capturedPiecesInfoStyles = {
+      height: '70%'
     }
 
     /**
      * Game board styles
      */
     const gameboardStyles = {
-        width: '50vw',
-        height: '50vw'
+        width: '45vw',
+        height: '45vw'
     }
 
-    return (
-        <div style={gameStyles}>
-             <div style={gameboardStyles}>
-                <Board
-                    squares={currentSnapshot.squares}
-                    pickedSquare={this.props.pickedSquare}
-                    possibleMoves={this.props.possibleMoves}
-                    onClick={pos => createPickSquareAction(pos)}
-                    isPlayWithHelp={this.props.isPlayWithHelp}
-                  />
-             </div>
+    const capturedPiecesStrs = capturedPieces.map((pieces, step) => {
+      let piecesLabel = '';
+      pieces.map((piece, step) => {
+        piecesLabel += piece;
+        piecesLabel += ' ';
+        return piece;
+      });
+      return piecesLabel;
+    });
 
-             <div style={gameInfoStyles}>
-                 <div>{status}</div>
-                 <p/>
-                 <table style={tableStyles}>
-                   <tr>
-                       <th style={stepStyles}>{"Step"}</th>
-                       <th style={moveStyles}>{"Move"}</th>
-                       <th style={actionStyles}>{"Action"}</th>
-                   </tr>
-                   {moves}
-                 </table>
-              </div>
+    const capturedPiecesRow = (
+        <React.Fragment>
+            <tr>
+              <td style={capturedLeftStyles}>{capturedPiecesStrs[0]}</td>
+              <td style={capturedRightStyles}>{capturedPiecesStrs[1]}</td>
+            </tr>
+        </React.Fragment>
+    );
+
+    return (
+        <div style={appStyles}>
+          <div style={headerStyles}>
+              {"TWO PLAYER CHESS"}
+          </div>
+          <div style={gameStyles}>
+               <div style={gameboardStyles}>
+                  <Board
+                      squares={currentSnapshot.squares}
+                      pickedSquare={this.props.pickedSquare}
+                      possibleMoves={this.props.possibleMoves}
+                      onClick={pos => createPickSquareAction(pos)}
+                      isPlayWithHelp={this.props.isPlayWithHelp}
+                    />
+               </div>
+
+               <div style={gameInfoStyles}>
+                    <div style={gameInfoContainerStyles}>
+                      <div style={turnInfoStyles}>
+                        <table style={turnTableStyles}>
+                          <tr>
+                              <th style={this.props.whiteIsNext ? whiteTurnStyles : turnStyles}>
+                                {"WHITE'S TURN!"}
+                                </th>
+                              <th style={!this.props.whiteIsNext ? blackTurnStyles : turnStyles}>
+                                {"BLACK'S TURN!"}
+                              </th>
+                          </tr>
+                        </table>
+                      </div>
+
+                      <div style={capturedPiecesInfoStyles}>
+                        <table style={capturedTableStyles}>
+                          <tr style={capturedHeaderStyles}>
+                              <th style={whiteStyles}>{"WHITE has captured"}</th>
+                              <th style={blackStyles}>{"BLACK has captured"}</th>
+                          </tr>
+                          {capturedPiecesRow}
+                        </table>
+                      </div>
+                   </div>
+
+                   <p/>
+
+                   <div style={gameInfoContainerStyles}>
+                     <table style={tableStyles}>
+                       <tr>
+                           <th style={stepStyles}>{"Step"}</th>
+                           <th style={moveStyles}>{"Move"}</th>
+                           <th style={actionStyles}>{"Action"}</th>
+                       </tr>
+                       {moves}
+                     </table>
+                   </div>
+                   <p/ >
+                </div>
+          </div>
         </div>
     );
   }
@@ -150,6 +346,7 @@ function mapStateToProps(state: StoreState): ChessGameProps {
     	whiteIsNext: state.whiteIsNext,
     	pickedSquare: state.pickedSquare,
     	possibleMoves: state.possibleMoves,
+      capturedPieces: state.capturedPieces,
       isPlayWithHelp: state.isPlayWithHelp,
  	}
 }
