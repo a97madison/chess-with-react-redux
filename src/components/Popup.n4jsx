@@ -1,0 +1,22 @@
+import * as React from "react";
+
+/* Popup props */
+ export public interface ~PopupProps extends React.ComponentProps {
+   public text: string;
+   public toggle: {function(): void}
+ }
+
+/* Popup React component */
+export default public class Popup extends React.Component<PopupProps, Object> {
+
+  @Override
+  public render(): React.Element<?> {
+    return (
+     <div className="modal">
+       <div className="modal_content" onClick={() => { this.props.toggle(); }}>
+        {this.props.text}
+      </div>
+     </div>
+    );
+ }
+}

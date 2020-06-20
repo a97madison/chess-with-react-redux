@@ -4,9 +4,11 @@ import {Coordinate} from "Coordinate";
 import {createJumpToStepAction} from "actions/JumpToStepAction";
 import {createPickSquareAction} from "actions/PickSquareAction";
 import {GameRules} from "GameRules";
+import {Move} from "Move";
 import {Piece} from "Piece";
 import * as React from "react";
 import {ReduxAction} from "@n4jsd/redux";
+import {Popup} from "components/Popup";
 import {Snapshot} from "store/StoreState";
 import {StoreState} from "store/StoreState";
 
@@ -25,6 +27,31 @@ export public interface ~ChessGameProps extends React.ComponentProps {
 /* Chess Game React component (root) */
 export default public class ChessGame extends React.Component<ChessGameProps, Object> {
 
+  private toggle(pos: Coordinate) {
+    this.props.createPickSquareAction(pos)
+
+    // temp variables for game rules methods
+    // copy history
+    const newHistory = this.props.history.slice(0, this.props.stepNumber + 1);
+    const currentSnapshot = newHistory[newHistory.length - 1];
+    // copy squares
+    const currentSquares: Array<Array<Piece>> = currentSnapshot.squares.map((row) => row.slice());
+    const piece = currentSquares[this.props.pickedSquare.row][this.props.pickedSquare.col];
+    const fromPos = this.props.pickedSquare;
+    const attemptedMove = new Move({piece: piece, fromPos: fromPos, toPos: pos});
+
+    if (!GameRules.isValidMove(currentSnapshot, attemptedMove)) {
+      // invalid move
+      // popup
+      console.log('invalid move');
+    } else if (GameRules.calculateWinner(currentSnapshot, this.props.whiteIsNext)) {
+      // checkmate!
+      // popup to announce  Winner
+      // restart game on popup quit
+      console.log('checkmate');
+    }
+  }
+
   @Override
   public componentDidMount() {
       document.body.style.backgroundColor = "lightgrey"
@@ -32,7 +59,7 @@ export default public class ChessGame extends React.Component<ChessGameProps, Ob
 
   @Override
   public render(): React.Element<?> {
-    const {history, createPickSquareAction, jumpToStep, whiteIsNext, stepNumber, capturedPieces} = this.props;
+    const {history, jumpToStep, whiteIsNext, stepNumber, capturedPieces} = this.props;
 
     const currentSnapshot = history[stepNumber];
 	const winner = GameRules.calculateWinner(currentSnapshot, whiteIsNext);
@@ -274,7 +301,7 @@ export default public class ChessGame extends React.Component<ChessGameProps, Ob
                       squares={currentSnapshot.squares}
                       pickedSquare={this.props.pickedSquare}
                       possibleMoves={this.props.possibleMoves}
-                      onClick={pos => createPickSquareAction(pos)}
+                      onClick={(pos: Coordinate) => { this.toggle(pos); }}
                       isPlayWithHelp={true}
                     />
                </div>
