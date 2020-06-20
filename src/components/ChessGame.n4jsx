@@ -1,14 +1,15 @@
 import {Board} from "components/Board";
+// import {Popup} from "components/Popup";
 import {connect} from "@n4jsd/react-redux";
 import {Coordinate} from "Coordinate";
 import {createJumpToStepAction} from "actions/JumpToStepAction";
 import {createPickSquareAction} from "actions/PickSquareAction";
+import {GameInfo} from "components/GameInfo";
 import {GameRules} from "GameRules";
 import {Move} from "Move";
 import {Piece} from "Piece";
 import * as React from "react";
 import {ReduxAction} from "@n4jsd/redux";
-import {Popup} from "components/Popup";
 import {Snapshot} from "store/StoreState";
 import {StoreState} from "store/StoreState";
 
@@ -27,7 +28,7 @@ export public interface ~ChessGameProps extends React.ComponentProps {
 /* Chess Game React component (root) */
 export default public class ChessGame extends React.Component<ChessGameProps, Object> {
 
-  private toggle(pos: Coordinate) {
+  private pickSquare(pos: Coordinate) {
     this.props.createPickSquareAction(pos)
 
     // temp variables for game rules methods
@@ -59,7 +60,7 @@ export default public class ChessGame extends React.Component<ChessGameProps, Ob
 
   @Override
   public render(): React.Element<?> {
-    const {history, jumpToStep, whiteIsNext, stepNumber, capturedPieces} = this.props;
+    const {history, jumpToStep, whiteIsNext, stepNumber} = this.props;
 
     const currentSnapshot = history[stepNumber];
 	const winner = GameRules.calculateWinner(currentSnapshot, whiteIsNext);
@@ -111,7 +112,7 @@ export default public class ChessGame extends React.Component<ChessGameProps, Ob
     if (winner) {
       status = "Winner: " + winner;
     } else {
-      status = "Next player: " + (this.props.whiteIsNext ? "White" : "Black");
+      status = "Next player: " + (whiteIsNext ? "White" : "Black");
     }
 
     const headerStyles = {
@@ -120,119 +121,6 @@ export default public class ChessGame extends React.Component<ChessGameProps, Ob
       paddingRight: '0px',
       backgroundColor: 'lightgrey',
       font: '18vw',
-    }
-
-    const gameInfoContainerStyles = {
-      width: '90%',
-      height: '18vw',
-      overflowY: 'scroll',
-      border: '1px solid darkgrey',
-      borderRadius: '10px',
-      padding: '15px'
-    }
-
-    const turnTableStyles = {
-      width: '100%',
-      borderSpacing: '0px',
-    }
-
-    const capturedTableStyles = {
-      height: '100%',
-      width: '100%',
-      board: '2px solid black',
-      borderSpacing: '0px',
-    }
-
-    const tableStyles = {
-        width: '100%',
-        border: '2px solid black',
-        borderSpacing: '0px',
-        backgroundColor: '#4CAF50',
-    }
-
-    const stepStyles = {
-        width: '10%',
-        padding: '5px',
-        border: '1px solid black',
-    }
-
-    const moveStyles = {
-        width: '45%',
-        padding: '5px',
-        border: '1px solid black',
-    }
-
-    const actionStyles = {
-        width: '45%',
-        padding: '5px',
-        border: '1px solid black',
-        backgroundColor: 'green',
-    }
-
-    const whiteTurnStyles = {
-        padding: '12px',
-        backgroundColor: '#4CAF50',
-        color: 'white',
-    }
-
-    const blackTurnStyles = {
-        padding: '12px',
-        backgroundColor: '#4CAF50',
-        color: 'black',
-    }
-
-    const turnStyles = {
-        padding: '12px',
-        backgroundColor: 'lightgrey',
-        color: 'lightgrey',
-    }
-
-    const whiteStyles = {
-        padding: '5px',
-        width: '50%',
-        border: '2px solid black',
-        borderRight: '1px solid black',
-        borderBottom: '1px solid black',
-        backgroundColor: 'lightgrey',
-        color: 'black',
-        fontFamily: 'Arial Unicode MS'
-    }
-
-    const blackStyles = {
-        padding: '5px',
-        width: '50%',
-        border: '2px solid black',
-        borderLeft: '1px solid black',
-        borderBottom: '1px solid black',
-        backgroundColor: 'black',
-        color: 'white',
-        fontFamily: 'Arial Unicode MS'
-    }
-
-    const capturedLeftStyles = {
-      padding: '5px',
-      verticalAlign: 'top',
-      width: '50%',
-      border: '2px solid black',
-      borderRight: '1px solid black',
-      borderTop: '1px solid black',
-      // backgroundColor: 'lightgrey',
-      color: 'black',
-      fontSize: '2vw',
-      fontFamily: 'Arial Unicode MS'
-    }
-
-    const capturedRightStyles = {
-      padding: '5px',
-      verticalAlign: 'top',
-      width: '50%',
-      height: 'inherit',
-      border: '2px solid black',
-      borderLeft: '1px solid black',
-      borderTop: '1px solid black',
-      color: 'black',
-      fontSize: '2vw',
-      fontFamily: 'Arial Unicode MS'
     }
 
     const appStyles = {
@@ -244,51 +132,11 @@ export default public class ChessGame extends React.Component<ChessGameProps, Ob
         flexDirection: 'row'
     }
 
-    const gameInfoStyles = {
-        marginTop: '20px',
-        marginLeft: '10px',
-        marginRight: '10px',
-        width: '50vw',
-        fontSize: '1.5vw'
-    }
-
-    const turnInfoStyles = {
-      height: '30%'
-    }
-
-    const capturedHeaderStyles = {
-      height: '4vw',
-      verticalAlign: 'middle',
-    }
-
-    const capturedPiecesInfoStyles = {
-      height: '70%'
-    }
-
     /* Game board styles */
     const gameboardStyles = {
         width: '45vw',
         height: '45vw'
     }
-
-    const capturedPiecesStrs = capturedPieces.map((pieces, step) => {
-      let piecesLabel = '';
-      pieces.map((piece, step) => {
-        piecesLabel += piece;
-        piecesLabel += ' ';
-        return piece;
-      });
-      return piecesLabel;
-    });
-
-    const capturedPiecesRow = (
-        <React.Fragment>
-            <tr>
-              <td style={capturedLeftStyles}>{capturedPiecesStrs[0]}</td>
-              <td style={capturedRightStyles}>{capturedPiecesStrs[1]}</td>
-            </tr>
-        </React.Fragment>
-    );
 
     return (
         <div style={appStyles}>
@@ -301,51 +149,16 @@ export default public class ChessGame extends React.Component<ChessGameProps, Ob
                       squares={currentSnapshot.squares}
                       pickedSquare={this.props.pickedSquare}
                       possibleMoves={this.props.possibleMoves}
-                      onClick={(pos: Coordinate) => { this.toggle(pos); }}
+                      onClick={(pos: Coordinate) => { this.pickSquare(pos); }}
                       isPlayWithHelp={true}
                     />
                </div>
 
-               <div style={gameInfoStyles}>
-                    <div style={gameInfoContainerStyles}>
-                      <div style={turnInfoStyles}>
-                        <table style={turnTableStyles}>
-                          <tr>
-                              <th style={this.props.whiteIsNext ? whiteTurnStyles : turnStyles}>
-                                {"WHITE'S TURN!"}
-                                </th>
-                              <th style={!this.props.whiteIsNext ? blackTurnStyles : turnStyles}>
-                                {"BLACK'S TURN!"}
-                              </th>
-                          </tr>
-                        </table>
-                      </div>
-
-                      <div style={capturedPiecesInfoStyles}>
-                        <table style={capturedTableStyles}>
-                          <tr style={capturedHeaderStyles}>
-                              <th style={whiteStyles}>{"WHITE has captured"}</th>
-                              <th style={blackStyles}>{"BLACK has captured"}</th>
-                          </tr>
-                          {capturedPiecesRow}
-                        </table>
-                      </div>
-                   </div>
-
-                   <p/>
-
-                   <div style={gameInfoContainerStyles}>
-                     <table style={tableStyles}>
-                       <tr>
-                           <th style={stepStyles}>{"Step"}</th>
-                           <th style={moveStyles}>{"Move"}</th>
-                           <th style={actionStyles}>{"Action"}</th>
-                       </tr>
-                       {moves}
-                     </table>
-                   </div>
-                   <p/ >
-                </div>
+                <GameInfo
+                    capturedPieces={this.props.capturedPieces}
+                    whiteIsNext={whiteIsNext}
+                    moves={moves}
+                />
           </div>
         </div>
     );

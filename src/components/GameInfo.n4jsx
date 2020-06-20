@@ -1,0 +1,217 @@
+import * as React from "react"
+import {Piece} from "Piece";
+
+/* Game Info component's props -- passed from chess game */
+export public interface ~GameInfoProps extends React.ComponentProps {
+  // captured pieces
+  public capturedPieces: Array<Array<Piece>>;
+  public whiteIsNext: boolean;
+  public moves: Array<React.Element<?>>;
+  // whiteisnext
+}
+
+/* Game Info React component */
+export default public class GameInfo extends React.Component<GameInfoProps, Object> {
+
+  @Override
+  public render(): React.Element<?> {
+
+    /* styling constants */
+    const gameInfoStyles = {
+        marginTop: '20px',
+        marginLeft: '10px',
+        marginRight: '10px',
+        width: '50vw',
+        fontSize: '1.5vw'
+    }
+
+    const gameInfoContainerStyles = {
+      width: '90%',
+      height: '18vw',
+      overflowY: 'scroll',
+      border: '1px solid darkgrey',
+      borderRadius: '10px',
+      padding: '15px'
+    }
+
+    const turnInfoStyles = {
+      height: '30%'
+    }
+
+    const turnTableStyles = {
+      width: '100%',
+      borderSpacing: '0px',
+    }
+
+    const whiteTurnStyles = {
+        padding: '12px',
+        backgroundColor: '#4CAF50',
+        color: 'white',
+    }
+
+    const blackTurnStyles = {
+        padding: '12px',
+        backgroundColor: '#4CAF50',
+        color: 'black',
+    }
+
+    const turnStyles = {
+        padding: '12px',
+        backgroundColor: 'lightgrey',
+        color: 'lightgrey',
+    }
+
+    const capturedPiecesInfoStyles = {
+      height: '70%'
+    }
+
+    const capturedTableStyles = {
+      height: '100%',
+      width: '100%',
+      board: '2px solid black',
+      borderSpacing: '0px',
+    }
+
+    const capturedHeaderStyles = {
+      height: '4vw',
+      verticalAlign: 'middle',
+    }
+
+    const whiteStyles = {
+        padding: '5px',
+        width: '50%',
+        border: '2px solid black',
+        borderRight: '1px solid black',
+        borderBottom: '1px solid black',
+        backgroundColor: 'lightgrey',
+        color: 'black',
+        fontFamily: 'Arial Unicode MS'
+    }
+
+    const blackStyles = {
+        padding: '5px',
+        width: '50%',
+        border: '2px solid black',
+        borderLeft: '1px solid black',
+        borderBottom: '1px solid black',
+        backgroundColor: 'black',
+        color: 'white',
+        fontFamily: 'Arial Unicode MS'
+    }
+
+    const tableStyles = {
+        width: '100%',
+        border: '2px solid black',
+        borderSpacing: '0px',
+        backgroundColor: '#4CAF50',
+    }
+
+    const stepStyles = {
+        width: '10%',
+        padding: '5px',
+        border: '1px solid black',
+    }
+
+    const moveStyles = {
+        width: '45%',
+        padding: '5px',
+        border: '1px solid black',
+    }
+
+    const actionStyles = {
+        width: '45%',
+        padding: '5px',
+        border: '1px solid black',
+        backgroundColor: 'green',
+    }
+
+    const capturedLeftStyles = {
+      padding: '5px',
+      verticalAlign: 'top',
+      width: '50%',
+      border: '2px solid black',
+      borderRight: '1px solid black',
+      borderTop: '1px solid black',
+      // backgroundColor: 'lightgrey',
+      color: 'black',
+      fontSize: '2vw',
+      fontFamily: 'Arial Unicode MS'
+    }
+
+    const capturedRightStyles = {
+      padding: '5px',
+      verticalAlign: 'top',
+      width: '50%',
+      height: 'inherit',
+      border: '2px solid black',
+      borderLeft: '1px solid black',
+      borderTop: '1px solid black',
+      color: 'black',
+      fontSize: '2vw',
+      fontFamily: 'Arial Unicode MS'
+    }
+
+    /* Create captured pieces react element for White and Black */
+    const capturedPiecesStrs = this.props.capturedPieces.map((pieces, step) => {
+      let piecesLabel = '';
+      pieces.map((piece, step) => {
+        piecesLabel += piece;
+        piecesLabel += ' ';
+        return piece;
+      });
+      return piecesLabel;
+    });
+
+    const capturedPiecesRow = (
+        <React.Fragment>
+            <tr>
+              <td style={capturedLeftStyles}>{capturedPiecesStrs[0]}</td>
+              <td style={capturedRightStyles}>{capturedPiecesStrs[1]}</td>
+            </tr>
+        </React.Fragment>
+    );
+
+    return (
+      <div style={gameInfoStyles}>
+           <div style={gameInfoContainerStyles}>
+             <div style={turnInfoStyles}>
+               <table style={turnTableStyles}>
+                 <tr>
+                     <th style={this.props.whiteIsNext ? whiteTurnStyles : turnStyles}>
+                       {"WHITE'S TURN!"}
+                       </th>
+                     <th style={!this.props.whiteIsNext ? blackTurnStyles : turnStyles}>
+                       {"BLACK'S TURN!"}
+                     </th>
+                 </tr>
+               </table>
+             </div>
+
+             <div style={capturedPiecesInfoStyles}>
+               <table style={capturedTableStyles}>
+                 <tr style={capturedHeaderStyles}>
+                     <th style={whiteStyles}>{"WHITE has captured"}</th>
+                     <th style={blackStyles}>{"BLACK has captured"}</th>
+                 </tr>
+                 {capturedPiecesRow}
+               </table>
+             </div>
+          </div>
+
+          <p/>
+
+          <div style={gameInfoContainerStyles}>
+            <table style={tableStyles}>
+              <tr>
+                  <th style={stepStyles}>{"Step"}</th>
+                  <th style={moveStyles}>{"Move"}</th>
+                  <th style={actionStyles}>{"Action"}</th>
+              </tr>
+              {this.props.moves}
+            </table>
+          </div>
+          <p/ >
+       </div>
+     );
+  }
+}
