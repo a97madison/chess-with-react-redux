@@ -4,9 +4,7 @@ import {LabelSquare} from "components/CoordinateSquare";
 import {Square} from "components/Square";
 import * as React from "react";
 
-/**
- * Board props
- */
+/* Board props */
 export public interface ~BoardProps extends React.ComponentProps {
     public squares: Array<Array<Piece>>;
     public pickedSquare: Coordinate;
@@ -15,9 +13,7 @@ export public interface ~BoardProps extends React.ComponentProps {
     public isPlayWithHelp: boolean;
 }
 
-/**
- * The board styles
- */
+/* The board styles */
 const boardStyles = {
 	display: 'flex',
 	flexWrap: 'wrap',
@@ -25,9 +21,7 @@ const boardStyles = {
 	height: '100%'
 }
 
-/**
- * Each board square occupies x% width and x% height
- */
+/* Each board square occupies x% width and x% height */
 const squareStyles = {
     width: '12%',
     height: '12%'
@@ -48,13 +42,10 @@ const topCornerStyles = {
   height: '4%'
 }
 
-/**
- * Board React component
- */
+/* Board React component */
 export public class Board extends React.Component<BoardProps, Object> {
-  /**
- * Render the i-th square on the board 0 <= i <= 63
- */
+
+  /* Render the i-th square on the board 0 <= i <= 63 */
  private renderSquare(pos: Coordinate, isWhite: boolean, isPicked: boolean, isPossibleMove: boolean, piece: Piece): React.Element<?> {
      return (
        <div style={squareStyles}>
@@ -70,9 +61,7 @@ export public class Board extends React.Component<BoardProps, Object> {
      );
  }
 
- /**
- * Render top coordinate square
- */
+ /* Render top coordinate square */
  private renderTopCoordinateSquare(label: string): React.Element<?> {
      return (
        <div style={topSquareStyles}>
@@ -83,9 +72,7 @@ export public class Board extends React.Component<BoardProps, Object> {
      );
    }
 
- /**
- * Render side coordinate square
- */
+ /* Render side coordinate square */
  private renderSideCoordinateSquare(label: string): React.Element<?> {
      return (
        <div style={sideSquareStyles}>
@@ -96,9 +83,7 @@ export public class Board extends React.Component<BoardProps, Object> {
      );
    }
 
- /**
- * Render top corner square
- */
+ /* Render top corner square */
  private renderTopCornerSquare(): React.Element<?> {
        return (
          <div style={topCornerStyles}>
@@ -109,6 +94,7 @@ export public class Board extends React.Component<BoardProps, Object> {
        );
      }
 
+  /* Render all 64 chessboard squares and all 16 label squares */
   private renderSquares(): Array<React.Element<?>> {
    	 	const squares = new Array<React.Element<?>>();
    		let isWhiteInitial = true;

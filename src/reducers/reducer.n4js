@@ -4,8 +4,6 @@ import {Move} from "Move";
 import {Piece} from "Piece";
 import {JumpToStepAction} from "actions/JumpToStepAction";
 import {PickSquareAction} from "actions/PickSquareAction";
-import {ToggleHelpAction} from "actions/ToggleHelpAction";
-import {ToggleHistoryAction} from "actions/ToggleHistoryAction";
 import {ReduxAction} from "@n4jsd/redux";
 import {StoreState} from "store/StoreState";
 import {initialState} from "store/StoreState";
@@ -23,32 +21,8 @@ export public function reducer(state: StoreState, action: ReduxAction): StoreSta
 		return state;
 	}
 	let newState = state;
-	const { history, stepNumber, whiteIsNext, pickedSquare, possibleMoves, capturedPieces, isPlayWithHelp, isHistory } = state;
+	const { history, stepNumber, whiteIsNext, capturedPieces } = state;
 	switch (action.type) {
-		case ToggleHelpAction.n4type.fqn:
-			const toggleHelpAction = action as ToggleHelpAction;
-			return {
-				history: history,
-				stepNumber: stepNumber,
-				whiteIsNext: whiteIsNext,
-				pickedSquare: pickedSquare,
-				possibleMoves: possibleMoves,
-				capturedPieces: capturedPieces,
-				isPlayWithHelp: toggleHelpAction.isPlayWithHelp,
-				isHistory: isHistory
-			};
-		case ToggleHistoryAction.n4type.fqn:
-			const toggleHistoryAction = action as ToggleHistoryAction;
-			return {
-				history: history,
-				stepNumber: stepNumber,
-				whiteIsNext: whiteIsNext,
-				pickedSquare: pickedSquare,
-				possibleMoves: possibleMoves,
-				capturedPieces: capturedPieces,
-				isPlayWithHelp: isPlayWithHelp,
-				isHistory: toggleHistoryAction.isHistory
-			};
 		case PickSquareAction.n4type.fqn: // This reducer is interested in this action
 			const pickSquareAction = action as PickSquareAction;
 			const selectedPos = pickSquareAction.coord;
@@ -77,9 +51,7 @@ export public function reducer(state: StoreState, action: ReduxAction): StoreSta
 								whiteIsNext: whiteIsNext,
 								pickedSquare: selectedPos,
 								possibleMoves: possibleMoves,
-								capturedPieces: newCapturedPieces,
-								isPlayWithHelp: isPlayWithHelp,
-								isHistory: isHistory
+								capturedPieces: newCapturedPieces
 							};
 	        }
 
@@ -105,8 +77,6 @@ export public function reducer(state: StoreState, action: ReduxAction): StoreSta
 										// add black piece to capturedPieces double array if necessary.
 										if (GameRules.isPositionOccupiedBypieceOtherColor(currentSquares, piece, toPos)) {
 											changeCapturedPieces = [newCapturedPieces[0].concat(currentSquares[toPos.row][toPos.col]), newCapturedPieces[1]];
-											console.log("black captured");
-											console.log(newCapturedPieces);
 										}
 		                whiteKingMoved = whiteKingMoved || (piece == Piece.WHITE_KING);
 		                leftWhiteRookMoved = leftWhiteRookMoved || ((piece == Piece.WHITE_ROOK) && state.pickedSquare.col == 0);
@@ -114,8 +84,6 @@ export public function reducer(state: StoreState, action: ReduxAction): StoreSta
 		            } else {
 										if (GameRules.isPositionOccupiedBypieceOtherColor(currentSquares, piece, toPos)) {
 											changeCapturedPieces = [newCapturedPieces[0], newCapturedPieces[1].concat(currentSquares[toPos.row][toPos.col])];
-											console.log("white captured");
-											console.log(newCapturedPieces);
 										}
 										// add white piece to capturedPieces double array if necessary.
 		                blackKingMoved = blackKingMoved || (piece == Piece.BLACK_KING);
@@ -144,8 +112,6 @@ export public function reducer(state: StoreState, action: ReduxAction): StoreSta
 									pickedSquare: null,
 									possibleMoves: new Array<Coordinate>,
 									capturedPieces: changeCapturedPieces,
-									isPlayWithHelp: isPlayWithHelp,
-									isHistory: isHistory
 								};
 	        	} else {
 							return {
@@ -155,8 +121,6 @@ export public function reducer(state: StoreState, action: ReduxAction): StoreSta
 								pickedSquare: null,
 								capturedPieces: capturedPieces,
 								possibleMoves: new Array<Coordinate>,
-								isPlayWithHelp: isPlayWithHelp,
-								isHistory: isHistory
 							};
 						}
 			}
@@ -166,8 +130,7 @@ export public function reducer(state: StoreState, action: ReduxAction): StoreSta
 			const jumpToStepAction = action as JumpToStepAction;
 			const step = jumpToStepAction.step;
 			const oldCapturedPieces = history[step].capturedPieces;
-			console.log(capturedPieces);
-			console.log(oldCapturedPieces);
+
 			return {
 				history: history.slice(),
 				stepNumber: step,
@@ -175,8 +138,6 @@ export public function reducer(state: StoreState, action: ReduxAction): StoreSta
 				pickedSquare: null,
 				possibleMoves: new Array<Coordinate>,
 				capturedPieces: oldCapturedPieces,
-				isPlayWithHelp: isPlayWithHelp,
-				isHistory: isHistory
 			};
 		default:
 			// Irrelevant action, return the old state

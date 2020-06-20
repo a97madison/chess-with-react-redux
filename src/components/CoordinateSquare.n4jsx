@@ -1,16 +1,12 @@
 import * as React from "react";
 
-/**
- * Coordinate square props
- */
+/* Coordinate square props */
 export public interface ~CoordinateSquareProps extends React.ComponentProps {
     public label: string;
 
 }
 
-/**
- * Coordinate square styles
- */
+/* Coordinate square styles */
 const labelSquareStyles = {
   fontSize:  '1.2vw',
   textAlign: 'center',
@@ -21,9 +17,7 @@ const labelSquareStyles = {
   height: '100%'
 }
 
-/**
- * Coordinate square component
- */
+/* Coordinate square component */
 export public class LabelSquare extends React.Component<CoordinateSquareProps, Object> {
   @Override
   public render(): React.Element<?> {

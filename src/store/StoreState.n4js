@@ -29,8 +29,6 @@ export public class ~StoreState {
     public pickedSquare: Coordinate;
     public possibleMoves: Array<Coordinate>;
     public capturedPieces: Array<Array<Piece>>;
-    public isPlayWithHelp: boolean;
-    public isHistory: boolean;
 }
 
  const initialSquares: Array<Array<Piece>> = [
@@ -63,7 +61,5 @@ export public const initialState: StoreState = {
 	whiteIsNext: true,
 	pickedSquare: null,
 	possibleMoves: new Array<Coordinate>(),
-  capturedPieces: initialCapturedPieces,
-  isPlayWithHelp: true,
-  isHistory: true
+  capturedPieces: initialCapturedPieces
 };

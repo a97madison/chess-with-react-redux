@@ -10,24 +10,19 @@ import {ReduxAction} from "@n4jsd/redux";
 import {Snapshot} from "store/StoreState";
 import {StoreState} from "store/StoreState";
 
-/**
- * Chess Game component's props
- */
+/* Chess Game component's props */
 export public interface ~ChessGameProps extends React.ComponentProps {
  	public history: Array<Snapshot>;
     public stepNumber: int;
     public whiteIsNext: boolean;
     public pickedSquare: Coordinate;
     public possibleMoves: Array<Coordinate>;
-    public isPlayWithHelp: boolean;
     public capturedPieces: Array<Array<Piece>>;
     public createPickSquareAction?: {function(Coordinate):void};
     public jumpToStep?: {function(int):void}
 }
 
-/**
- * Chess Game React component (root)
- */
+/* Chess Game React component (root) */
 export default public class ChessGame extends React.Component<ChessGameProps, Object> {
 
   @Override
@@ -69,7 +64,6 @@ export default public class ChessGame extends React.Component<ChessGameProps, Ob
         width: '100%',
         textAlign: 'center',
         textDecoration: 'none',
-        // display: 'inline-block'
       };
 
       return (
@@ -94,10 +88,8 @@ export default public class ChessGame extends React.Component<ChessGameProps, Ob
     }
 
     const headerStyles = {
-      width: '100%',
-      textAlign: 'center',
       padding: '10px',
-      paddingLeft: '0px',
+      paddingLeft: '41vw',
       paddingRight: '0px',
       backgroundColor: 'lightgrey',
       font: '18vw',
@@ -211,7 +203,6 @@ export default public class ChessGame extends React.Component<ChessGameProps, Ob
       border: '2px solid black',
       borderLeft: '1px solid black',
       borderTop: '1px solid black',
-      // backgroundColor: 'white',
       color: 'black',
       fontSize: '2vw',
       fontFamily: 'Arial Unicode MS'
@@ -247,9 +238,7 @@ export default public class ChessGame extends React.Component<ChessGameProps, Ob
       height: '70%'
     }
 
-    /**
-     * Game board styles
-     */
+    /* Game board styles */
     const gameboardStyles = {
         width: '45vw',
         height: '45vw'
@@ -286,7 +275,7 @@ export default public class ChessGame extends React.Component<ChessGameProps, Ob
                       pickedSquare={this.props.pickedSquare}
                       possibleMoves={this.props.possibleMoves}
                       onClick={pos => createPickSquareAction(pos)}
-                      isPlayWithHelp={this.props.isPlayWithHelp}
+                      isPlayWithHelp={true}
                     />
                </div>
 
@@ -346,8 +335,7 @@ function mapStateToProps(state: StoreState): ChessGameProps {
     	whiteIsNext: state.whiteIsNext,
     	pickedSquare: state.pickedSquare,
     	possibleMoves: state.possibleMoves,
-      capturedPieces: state.capturedPieces,
-      isPlayWithHelp: state.isPlayWithHelp,
+      capturedPieces: state.capturedPieces
  	}
 }
 

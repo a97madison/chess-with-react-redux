@@ -1,16 +1,14 @@
 import {Coordinate} from "Coordinate";
 import {Piece} from "Piece";
 
-/**
- * This class represents a move
- */
+/* This class represents a move */
 export public class Move {
     public piece: Piece;
     public fromPos: Coordinate;
     public toPos: Coordinate;
-    
+
     public constructor(@Spec spec:~i~this) {}
-    
+
 
     @Override
     public toString(): string {

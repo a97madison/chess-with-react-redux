@@ -1,6 +1,0 @@
-import App from "components/App";
-import * as ReactDOM from 'react-dom';
-
-const mountNode = document.getElementById("mainAppMountPoint")
-
-ReactDOM.render(<App />, mountNode);

@@ -1,9 +1,7 @@
 import {Piece} from "Piece";
 import * as React from "react";
 
-/**
- * Square props
- */
+/* Square props */
 export public interface ~SquareProps extends React.ComponentProps {
 	public isWhite: boolean;
     public piece: Piece;
@@ -13,9 +11,7 @@ export public interface ~SquareProps extends React.ComponentProps {
     public isPlayWithHelp: boolean;
 }
 
-/**
- * Board square styles
- */
+/* Board square styles */
 const boardSquareStyles = {
   display: 'flex',
   justifyContent: 'center',
@@ -26,9 +22,7 @@ const boardSquareStyles = {
 	fontFamily: 'Arial Unicode MS'
 }
 
-/**
- * Square React component. needs to be a class
- */
+/* Square React component. needs to be a class */
 export public class Square extends React.Component<SquareProps, Object> {
 
 		@Override
@@ -38,7 +32,7 @@ export public class Square extends React.Component<SquareProps, Object> {
 			let fadedLight = 'rgba(234, 218, 185, 0.2)';
 			let fadedDark = 'rgba(194, 164, 130, 0.2)';
 			let possibleMove = 'rgba(0, 128, 0, 0.95)';
-			let possibleCapture = 'rgba(255, 255, 0, 0.9)'; // CAN U MOVE HERE??
+			let possibleCapture = 'rgba(255, 255, 0, 0.9)';
 
 			let backgroundColour: string = this.props.isWhite? light : dark;
 			// Special square highlighting a picked square or possible move?
@@ -46,8 +40,10 @@ export public class Square extends React.Component<SquareProps, Object> {
 				backgroundColour = this.props.isWhite? fadedLight : fadedDark;
 			} else if (this.props.isPossibleMove && this.props.isPlayWithHelp) {
 				if (this.props.piece) {
+					// player can move to this position
 					backgroundColour = possibleMove;
 				} else {
+					// player can capture opponent's piece in this position
 					backgroundColour = possibleCapture;
 				}
 			}
