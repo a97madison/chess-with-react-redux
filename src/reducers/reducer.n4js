@@ -92,8 +92,8 @@ export public function reducer(state: StoreState, action: ReduxAction): StoreSta
 								pickedSquare: selectedPos,
 								possibleMoves: possibleMoves,
 								capturedPieces: newCapturedPieces,
-								isInvalidVisible: isInvalidVisible,
-								isCheckmateVisible: isCheckmateVisible,
+								isInvalidVisible: false,
+								isCheckmateVisible: false,
 							};
 	        }
 
@@ -165,8 +165,8 @@ export public function reducer(state: StoreState, action: ReduxAction): StoreSta
 								pickedSquare: null,
 								capturedPieces: capturedPieces,
 								possibleMoves: new Array<Coordinate>,
-								isInvalidVisible: isInvalidVisible,
-								isCheckmateVisible: isCheckmateVisible,
+								isInvalidVisible: false,
+								isCheckmateVisible: false,
 							};
 						}
 			}
