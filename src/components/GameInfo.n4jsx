@@ -170,6 +170,14 @@ export public class GameInfo extends React.Component<GameInfoProps, Object> {
         </React.Fragment>
     );
 
+    // label string constants
+    const whitesTurn = "WHITE'S TURN!";
+    const blacksTurn = "BLACK'S TURN!";
+    const whiteCaptured = "WHITE has captured";
+    const blackCaptured = "BLACK has captured";
+    const step = "Step";
+    const move = "Move";
+    const action = "Action";
     return (
       <div style={gameInfoStyles}>
            <div style={gameInfoContainerStyles}>
@@ -177,10 +185,10 @@ export public class GameInfo extends React.Component<GameInfoProps, Object> {
                <table style={turnTableStyles}>
                  <tr>
                      <th style={this.props.whiteIsNext ? whiteTurnStyles : turnStyles}>
-                       {"WHITE'S TURN!"}
+                       {whitesTurn}
                        </th>
                      <th style={!this.props.whiteIsNext ? blackTurnStyles : turnStyles}>
-                       {"BLACK'S TURN!"}
+                       {blacksTurn}
                      </th>
                  </tr>
                </table>
@@ -189,8 +197,8 @@ export public class GameInfo extends React.Component<GameInfoProps, Object> {
              <div style={capturedPiecesInfoStyles}>
                <table style={capturedTableStyles}>
                  <tr style={capturedHeaderStyles}>
-                     <th style={whiteStyles}>{"WHITE has captured"}</th>
-                     <th style={blackStyles}>{"BLACK has captured"}</th>
+                     <th style={whiteStyles}>{whiteCaptured}</th>
+                     <th style={blackStyles}>{blackCaptured}</th>
                  </tr>
                  {capturedPiecesRow}
                </table>
@@ -202,9 +210,9 @@ export public class GameInfo extends React.Component<GameInfoProps, Object> {
           <div style={gameInfoContainerStyles}>
             <table style={tableStyles}>
               <tr>
-                  <th style={stepStyles}>{"Step"}</th>
-                  <th style={moveStyles}>{"Move"}</th>
-                  <th style={actionStyles}>{"Action"}</th>
+                  <th style={stepStyles}>{step}</th>
+                  <th style={moveStyles}>{move}</th>
+                  <th style={actionStyles}>{action}</th>
               </tr>
               {this.props.moves}
             </table>

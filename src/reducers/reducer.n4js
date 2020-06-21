@@ -22,7 +22,6 @@ export public function reducer(state: StoreState, action: ReduxAction): StoreSta
 	if (!action) {
 		return state;
 	}
-	let newState = state;
 	const { history, stepNumber, whiteIsNext, capturedPieces, isInvalidVisible, isCheckmateVisible } = state;
 	switch (action.type) {
 		case ToggleInvalidVisibilityAction.n4type.fqn:
@@ -176,11 +175,12 @@ export public function reducer(state: StoreState, action: ReduxAction): StoreSta
 			const jumpToStepAction = action as JumpToStepAction;
 			const step = jumpToStepAction.step;
 			const oldCapturedPieces = history[step].capturedPieces;
+			const isWhiteNext = step % 2 == 0;
 
 			return {
 				history: history.slice(),
 				stepNumber: step,
-				whiteIsNext: step % 2 == 0,
+				whiteIsNext: isWhiteNext,
 				pickedSquare: null,
 				possibleMoves: new Array<Coordinate>,
 				capturedPieces: oldCapturedPieces,
