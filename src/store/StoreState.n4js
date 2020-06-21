@@ -29,6 +29,8 @@ export public class ~StoreState {
     public pickedSquare: Coordinate;
     public possibleMoves: Array<Coordinate>;
     public capturedPieces: Array<Array<Piece>>;
+    public isInvalidVisible: boolean;
+    public isCheckmateVisible: boolean;
 }
 
  const initialSquares: Array<Array<Piece>> = [
@@ -61,5 +63,7 @@ export public const initialState: StoreState = {
 	whiteIsNext: true,
 	pickedSquare: null,
 	possibleMoves: new Array<Coordinate>(),
-  capturedPieces: initialCapturedPieces
+  capturedPieces: initialCapturedPieces,
+  isInvalidVisible: false,
+  isCheckmateVisible: false,
 };

@@ -1,0 +1,16 @@
+import {ActionBase} from "actions/ActionBase";
+
+/**
+ * Toggle Checkmate visibility action
+ */
+export public class ToggleCheckmateVisibilityAction extends ActionBase {
+	public isVisible: boolean;
+	public constructor(@Spec spec:~i~this) {}
+}
+
+/**
+ * Create a ToggleCheckmateVisibilityAction
+ */
+export public function createToggleCheckmateVisibilityAction(isVisible: boolean): ToggleCheckmateVisibilityAction {
+  return new ToggleCheckmateVisibilityAction({ isVisible: isVisible });
+}

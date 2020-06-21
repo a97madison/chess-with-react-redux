@@ -1,10 +1,12 @@
 import {Board} from "components/Board";
-// import {Popup} from "components/Popup";
+import {GameInfo} from "components/GameInfo";
+import {Popup} from "components/Popup";
 import {connect} from "@n4jsd/react-redux";
 import {Coordinate} from "Coordinate";
 import {createJumpToStepAction} from "actions/JumpToStepAction";
 import {createPickSquareAction} from "actions/PickSquareAction";
-import {GameInfo} from "components/GameInfo";
+import {createToggleInvalidVisibilityAction} from "actions/ToggleInvalidVisibilityAction";
+import {createToggleCheckmateVisibilityAction} from "actions/ToggleCheckmateVisibilityAction";
 import {GameRules} from "GameRules";
 import {Move} from "Move";
 import {Piece} from "Piece";
@@ -21,8 +23,12 @@ export public interface ~ChessGameProps extends React.ComponentProps {
     public pickedSquare: Coordinate;
     public possibleMoves: Array<Coordinate>;
     public capturedPieces: Array<Array<Piece>>;
+    public isInvalidVisible: boolean;
+    public isCheckmateVisible: boolean;
     public createPickSquareAction?: {function(Coordinate):void};
-    public jumpToStep?: {function(int):void}
+    public jumpToStep?: {function(int):void};
+    public toggleInvalidVisibility?: {function(boolean):void};
+    public toggleCheckmateVisibility?: {function(boolean):void};
 }
 
 /* Chess Game React component (root) */
@@ -31,26 +37,36 @@ export default public class ChessGame extends React.Component<ChessGameProps, Ob
   private pickSquare(pos: Coordinate) {
     this.props.createPickSquareAction(pos)
 
+    const {history, pickedSquare, stepNumber, toggleInvalidVisibility, toggleCheckmateVisibility} = this.props;
     // temp variables for game rules methods
     // copy history
-    const newHistory = this.props.history.slice(0, this.props.stepNumber + 1);
+    const newHistory = history.slice(0, stepNumber + 1);
     const currentSnapshot = newHistory[newHistory.length - 1];
     // copy squares
     const currentSquares: Array<Array<Piece>> = currentSnapshot.squares.map((row) => row.slice());
-    const piece = currentSquares[this.props.pickedSquare.row][this.props.pickedSquare.col];
-    const fromPos = this.props.pickedSquare;
-    const attemptedMove = new Move({piece: piece, fromPos: fromPos, toPos: pos});
 
-    if (!GameRules.isValidMove(currentSnapshot, attemptedMove)) {
-      // invalid move
-      // popup
-      console.log('invalid move');
-    } else if (GameRules.calculateWinner(currentSnapshot, this.props.whiteIsNext)) {
-      // checkmate!
-      // popup to announce  Winner
-      // restart game on popup quit
-      console.log('checkmate');
+    if (this.props.pickedSquare != null) {
+      const piece = currentSquares[pickedSquare.row][pickedSquare.col];
+      const newPiece = currentSquares[pos.row][pos.col];
+      const fromPos = pickedSquare;
+      const attemptedMove = new Move({piece: piece, fromPos: fromPos, toPos: pos});
+
+      if (!GameRules.isValidMove(currentSnapshot, attemptedMove) && newPiece == null) {
+        // invalid move. popup
+        toggleInvalidVisibility(true);
+        console.log('invalid move');
+      }
     }
+  }
+
+  private hideInvalidVisibility() {
+    this.props.toggleInvalidVisibility(false);
+  }
+
+  private hideCheckmateVisibility() {
+    this.props.toggleCheckmateVisibility(false);
+    // refresh page / restart app
+    window.location.reload(false);
   }
 
   @Override
@@ -64,11 +80,11 @@ export default public class ChessGame extends React.Component<ChessGameProps, Ob
 
     const currentSnapshot = history[stepNumber];
 	const winner = GameRules.calculateWinner(currentSnapshot, whiteIsNext);
-    const moves = history.map((snapshot, step) => {
+    const moves: Array<React.Element<?>> = history.map((snapshot, step) => {
       const actionLabel = step ? 'Go to move #' + step : 'Go to start of game.';
 
       const tableCellStyles = {
-          textAlign: 'left',
+          textAlign: 'center',
           verticalAlign: 'middle',
           border: '1px solid black',
           position: 'relative',
@@ -160,6 +176,19 @@ export default public class ChessGame extends React.Component<ChessGameProps, Ob
                     moves={moves}
                 />
           </div>
+
+          {this.props.isInvalidVisible ?
+            <Popup
+              text={"INVALID MOVE!"}
+              toggle={() => { this.hideInvalidVisibility(); }}
+            /> : null}
+
+          {this.props.isCheckmateVisible ?
+            <Popup
+              text={"CHECKMATE! " + (this.props.whiteIsNext ? "BLACK" : "WHITE") + " WINS!"}
+              toggle={() => { this.hideCheckmateVisibility(); }}
+            /> : null}
+
         </div>
     );
   }
@@ -175,7 +204,9 @@ function mapStateToProps(state: StoreState): ChessGameProps {
     	whiteIsNext: state.whiteIsNext,
     	pickedSquare: state.pickedSquare,
     	possibleMoves: state.possibleMoves,
-      capturedPieces: state.capturedPieces
+      capturedPieces: state.capturedPieces,
+      isInvalidVisible: state.isInvalidVisible,
+      isCheckmateVisible: state.isCheckmateVisible
  	}
 }
 
@@ -189,7 +220,13 @@ function mapDispatchToProps(dispatch: {function(ReduxAction): any} ) {
 		},
 		jumpToStep: (step: number) => {
 			dispatch(createJumpToStepAction(step))
-		}
+		},
+    toggleInvalidVisibility: (isVisible: boolean) => {
+      dispatch(createToggleInvalidVisibilityAction(isVisible))
+    },
+    toggleCheckmateVisibility: (isVisible: boolean) => {
+      dispatch(createToggleCheckmateVisibilityAction(isVisible))
+    }
 	}
  }
 

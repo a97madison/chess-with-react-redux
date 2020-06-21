@@ -4,6 +4,8 @@ import {Move} from "Move";
 import {Piece} from "Piece";
 import {JumpToStepAction} from "actions/JumpToStepAction";
 import {PickSquareAction} from "actions/PickSquareAction";
+import {ToggleInvalidVisibilityAction} from "actions/ToggleInvalidVisibilityAction";
+import {ToggleCheckmateVisibilityAction} from "actions/ToggleCheckmateVisibilityAction";
 import {ReduxAction} from "@n4jsd/redux";
 import {StoreState} from "store/StoreState";
 import {initialState} from "store/StoreState";
@@ -21,8 +23,37 @@ export public function reducer(state: StoreState, action: ReduxAction): StoreSta
 		return state;
 	}
 	let newState = state;
-	const { history, stepNumber, whiteIsNext, capturedPieces } = state;
+	const { history, stepNumber, whiteIsNext, capturedPieces, isInvalidVisible, isCheckmateVisible } = state;
 	switch (action.type) {
+		case ToggleInvalidVisibilityAction.n4type.fqn:
+			const invalidVisibilityAction = action as ToggleInvalidVisibilityAction;
+
+			return {
+				history: history,
+				stepNumber: stepNumber,
+				whiteIsNext: whiteIsNext,
+				pickedSquare: state.pickedSquare,
+				possibleMoves: state.possibleMoves,
+				capturedPieces: capturedPieces,
+				isInvalidVisible: invalidVisibilityAction.isVisible,
+				isCheckmateVisible: isCheckmateVisible,
+			};
+		case ToggleCheckmateVisibilityAction.n4type.fqn:
+			const checkmateVisibilityAction = action as ToggleCheckmateVisibilityAction;
+
+			if (!checkmateVisibilityAction.isVisible) return initialState;
+
+			return {
+				history: history,
+				stepNumber: stepNumber,
+				whiteIsNext: whiteIsNext,
+				pickedSquare: state.pickedSquare,
+				possibleMoves: state.possibleMoves,
+				capturedPieces: capturedPieces,
+				isInvalidVisible: isInvalidVisible,
+				isCheckmateVisible: checkmateVisibilityAction.isVisible,
+			};
+
 		case PickSquareAction.n4type.fqn: // This reducer is interested in this action
 			const pickSquareAction = action as PickSquareAction;
 			const selectedPos = pickSquareAction.coord;
@@ -37,7 +68,16 @@ export public function reducer(state: StoreState, action: ReduxAction): StoreSta
 
 			if (GameRules.calculateWinner(currentSnapshot, whiteIsNext)) {
 				// Game over, nothing to do anymore
-				return newState;
+				return {
+					history: history,
+					stepNumber: stepNumber,
+					whiteIsNext: whiteIsNext,
+					pickedSquare: state.pickedSquare,
+					possibleMoves: state.possibleMoves,
+					capturedPieces: capturedPieces,
+					isInvalidVisible: isInvalidVisible,
+					isCheckmateVisible: true
+				};
 			}
 
         	const currentPiece = currentSquares[selectedPos.row][selectedPos.col];
@@ -51,7 +91,9 @@ export public function reducer(state: StoreState, action: ReduxAction): StoreSta
 								whiteIsNext: whiteIsNext,
 								pickedSquare: selectedPos,
 								possibleMoves: possibleMoves,
-								capturedPieces: newCapturedPieces
+								capturedPieces: newCapturedPieces,
+								isInvalidVisible: isInvalidVisible,
+								isCheckmateVisible: isCheckmateVisible,
 							};
 	        }
 
@@ -112,6 +154,8 @@ export public function reducer(state: StoreState, action: ReduxAction): StoreSta
 									pickedSquare: null,
 									possibleMoves: new Array<Coordinate>,
 									capturedPieces: changeCapturedPieces,
+									isInvalidVisible: isInvalidVisible,
+									isCheckmateVisible: isCheckmateVisible,
 								};
 	        	} else {
 							return {
@@ -121,6 +165,8 @@ export public function reducer(state: StoreState, action: ReduxAction): StoreSta
 								pickedSquare: null,
 								capturedPieces: capturedPieces,
 								possibleMoves: new Array<Coordinate>,
+								isInvalidVisible: isInvalidVisible,
+								isCheckmateVisible: isCheckmateVisible,
 							};
 						}
 			}
@@ -138,6 +184,8 @@ export public function reducer(state: StoreState, action: ReduxAction): StoreSta
 				pickedSquare: null,
 				possibleMoves: new Array<Coordinate>,
 				capturedPieces: oldCapturedPieces,
+				isInvalidVisible: isInvalidVisible,
+				isCheckmateVisible: isCheckmateVisible,
 			};
 		default:
 			// Irrelevant action, return the old state

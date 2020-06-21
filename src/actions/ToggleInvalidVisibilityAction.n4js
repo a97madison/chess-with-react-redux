@@ -1,0 +1,16 @@
+import {ActionBase} from "actions/ActionBase";
+
+/**
+ * Toggle Invalid visibility action
+ */
+export public class ToggleInvalidVisibilityAction extends ActionBase {
+	public isVisible: boolean;
+	public constructor(@Spec spec:~i~this) {}
+}
+
+/**
+ * Create a ToggleInvalidVisibilityAction
+ */
+export public function createToggleInvalidVisibilityAction(isVisible: boolean): ToggleInvalidVisibilityAction {
+  return new ToggleInvalidVisibilityAction({ isVisible: isVisible });
+}
