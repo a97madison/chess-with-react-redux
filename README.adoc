@@ -1,3 +1,51 @@
+This project demonstrates how to develop a chess game application using N4JS, React and Redux.
+
+The game looks like this:
+
+image::images/chess-game-screenshot.png[Chess game screenshot]
+
+// The tag DevSetup is used in n4js-tutorial-chess.adoc.
+// tag::DevSetup[]
+== Developer Setup and generate folder `src-gen`
+
+Developer setup and the generation of the `src-gen` folder (using the command line):
+
+Open the project folder in a shell and execute the following commands:
+
+[source,bash]
+----
+npm install      # download node_modules
+npm run build    # generate js files in folder src-gen
+----
+
+== Create the application
+
+
+The `package.json` defines a script `webpack` to create the application `chess-app.js`.
+Run it with:
+
+[source,bash]
+----
+npm run webpack
+----
+
+== Start local web server
+
+The `package.json` defines a script `start` for starting the Webpack Dev Server serving the application to a browser on `http://localhost:8080`.
+To start the web server, run:
+
+[source,bash]
+----
+npm start
+----
+// end::CreateApp[]
+
+
+
+
+
+
+
 This project is an extended version of the link:../chess-react/[chess-react project].
 It demonstrates how to develop a chess game application using link:https://www.eclipse.org/n4js/[N4JS], link:https://reactjs.org/[React], and link:https://redux.js.org/[Redux].
 Both of the projects are transpiled and run in the same manner.
