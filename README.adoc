@@ -2,7 +2,7 @@ This project demonstrates how to develop a chess game application using N4JS, Re
 
 The game looks like this:
 
-image::images/chess-game-screenshot.png[Chess game screenshot]
+image::Chess.gif[Chess game gif]
 
 // The tag DevSetup is used in n4js-tutorial-chess.adoc.
 // tag::DevSetup[]
