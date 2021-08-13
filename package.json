@@ -45,7 +45,7 @@
 		"n4js-runtime": "latest",
 		"n4js-runtime-es2015": "latest",
 		"n4js-runtime-html5": "latest",
-		"next": "^9.3.6",
+		"next": "^11.1.0",
 		"org.eclipse.n4js.mangelhaft": "latest",
 		"org.eclipse.n4js.mangelhaft.assert": "latest",
 		"react": "^16.13.1",
